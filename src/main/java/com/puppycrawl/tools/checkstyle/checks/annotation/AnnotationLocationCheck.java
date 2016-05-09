@@ -238,25 +238,28 @@ public class AnnotationLocationCheck extends AbstractCheck {
     }
 
     /**
-     * Some javadoc.
-     * @param modifierNode Some javadoc.
-     * @param correctLevel Some javadoc.
+     * Explores the given node and all it's siblings and verifies location for each
+     * discovered annotation node.
+     * @param modifierNode node to check.
+     * @param correctLevel expected indentation level.
      */
     private void checkAnnotations(DetailAST modifierNode, int correctLevel) {
-        DetailAST annotation = modifierNode.getFirstChild();
+        DetailAST node = modifierNode.getFirstChild();
 
-        while (annotation != null && annotation.getType() == TokenTypes.ANNOTATION) {
-            final boolean hasParameters = isParameterized(annotation);
+        while (node != null) {
+            if (node.getType() == TokenTypes.ANNOTATION) {
+                final boolean hasParameters = isParameterized(node);
 
-            if (!isCorrectLocation(annotation, hasParameters)) {
-                log(annotation.getLineNo(),
-                        MSG_KEY_ANNOTATION_LOCATION_ALONE, getAnnotationName(annotation));
+                if (!isCorrectLocation(node, hasParameters)) {
+                    log(node.getLineNo(),
+                            MSG_KEY_ANNOTATION_LOCATION_ALONE, getAnnotationName(node));
+                }
+                else if (node.getColumnNo() != correctLevel && !hasNodeBefore(node)) {
+                    log(node.getLineNo(), MSG_KEY_ANNOTATION_LOCATION,
+                            getAnnotationName(node), node.getColumnNo(), correctLevel);
+                }
             }
-            else if (annotation.getColumnNo() != correctLevel && !hasNodeBefore(annotation)) {
-                log(annotation.getLineNo(), MSG_KEY_ANNOTATION_LOCATION,
-                    getAnnotationName(annotation), annotation.getColumnNo(), correctLevel);
-            }
-            annotation = annotation.getNextSibling();
+            node = node.getNextSibling();
         }
     }
 

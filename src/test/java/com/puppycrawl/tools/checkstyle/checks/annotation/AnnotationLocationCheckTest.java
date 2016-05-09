@@ -82,6 +82,27 @@ public class AnnotationLocationCheckTest extends BaseCheckTestSupport {
     }
 
     @Test
+    public void testIncorrectAnnotationAmongModifiers() throws Exception {
+        final DefaultConfiguration checkConfig = createCheckConfig(AnnotationLocationCheck.class);
+        final String[] expected = {
+            "5: " + getCheckMessage(MSG_KEY_ANNOTATION_LOCATION_ALONE, "NotAmongModifiers"),
+            "6: " + getCheckMessage(MSG_KEY_ANNOTATION_LOCATION_ALONE, "NotAmongModifiers"),
+            "7: " + getCheckMessage(MSG_KEY_ANNOTATION_LOCATION_ALONE, "NotAmongModifiers"),
+            "8: " + getCheckMessage(MSG_KEY_ANNOTATION_LOCATION_ALONE, "NotAmongModifiers"),
+            "10: " + getCheckMessage(MSG_KEY_ANNOTATION_LOCATION_ALONE, "NotAmongModifiers"),
+            "13: " + getCheckMessage(MSG_KEY_ANNOTATION_LOCATION_ALONE, "NotAmongModifiers"),
+            "16: " + getCheckMessage(MSG_KEY_ANNOTATION_LOCATION_ALONE, "NotAmongModifiers"),
+            "19: " + getCheckMessage(MSG_KEY_ANNOTATION_LOCATION_ALONE, "NotAmongModifiers"),
+            "22: " + getCheckMessage(MSG_KEY_ANNOTATION_LOCATION_ALONE, "NotAmongModifiers"),
+            "25: " + getCheckMessage(MSG_KEY_ANNOTATION_LOCATION_ALONE, "NotAmongModifiers"),
+            "28: " + getCheckMessage(MSG_KEY_ANNOTATION_LOCATION_ALONE, "NotAmongModifiers"),
+            "31: " + getCheckMessage(MSG_KEY_ANNOTATION_LOCATION_ALONE, "NotAmongModifiers"),
+            "34: " + getCheckMessage(MSG_KEY_ANNOTATION_LOCATION_ALONE, "NotAmongModifiers"),
+        };
+        verify(checkConfig, getPath("InputIncorrectAnnotationAmongModifiers.java"), expected);
+    }
+
+    @Test
     public void testGetAcceptableTokens() {
         final AnnotationLocationCheck constantNameCheckObj = new AnnotationLocationCheck();
         final int[] actual = constantNameCheckObj.getAcceptableTokens();
