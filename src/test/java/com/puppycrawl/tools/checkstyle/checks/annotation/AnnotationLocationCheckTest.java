@@ -40,6 +40,12 @@ public class AnnotationLocationCheckTest extends BaseCheckTestSupport {
                 + "annotation" + File.separator + filename);
     }
 
+    @Override
+    protected String getNonCompilablePath(String filename) throws IOException {
+        return super.getNonCompilablePath("checks" + File.separator
+                + "annotation" + File.separator + filename);
+    }
+
     @Test
     public void testGetRequiredTokens() {
         final AnnotationLocationCheck checkObj = new AnnotationLocationCheck();
@@ -100,6 +106,13 @@ public class AnnotationLocationCheckTest extends BaseCheckTestSupport {
             "34: " + getCheckMessage(MSG_KEY_ANNOTATION_LOCATION_ALONE, "NotAmongModifiers"),
         };
         verify(checkConfig, getPath("InputIncorrectAnnotationAmongModifiers.java"), expected);
+    }
+
+    @Test
+    public void testTypeAnnotations() throws Exception {
+        final DefaultConfiguration checkConfig = createCheckConfig(AnnotationLocationCheck.class);
+        final String[] expected = CommonUtils.EMPTY_STRING_ARRAY;
+        verify(checkConfig, getNonCompilablePath("InputTypeParameterAnnotations.java"), expected);
     }
 
     @Test
